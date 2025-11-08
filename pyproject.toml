@@ -1,0 +1,44 @@
+[project]
+name = "x_make_progress_board_x"
+version = "0.1.1"
+description = "PySide6 progress board that monitors orchestrator stage snapshots and hands off to the full GUI when complete."
+readme = "README.md"
+authors = [ { name = "Lab 4357" } ]
+license = { text = "Proprietary" }
+requires-python = ">=3.11"
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Operating System :: Microsoft :: Windows",
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: User Interfaces",
+]
+dependencies = [
+  "PySide6>=6.7",
+  "jsonschema>=4.21",
+]
+
+[project.urls]
+"Homepage" = "https://example.invalid/x_make_progress_board_x"
+"Change Control" = "https://example.invalid/change-control"
+
+[tool.setuptools]
+package-data = { "x_make_progress_board_x" = ["py.typed"] }
+
+[tool.setuptools.packages.find]
+include = ["x_make_progress_board_x*"]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+
+[tool.pyright]
+typeCheckingMode = "strict"
+
+[build-system]
+requires = ["setuptools>=68", "wheel", "build"]
+build-backend = "setuptools.build_meta"
