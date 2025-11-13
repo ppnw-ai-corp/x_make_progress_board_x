@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import json
 import threading
-from collections.abc import Sequence
 from pathlib import Path
-from typing import cast
+from typing import TYPE_CHECKING, cast
+
+if TYPE_CHECKING:  # pragma: no cover - typing helpers only
+    from collections.abc import Sequence
 
 import pytest
 

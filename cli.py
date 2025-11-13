@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import argparse
 import threading
-from collections.abc import Sequence
 from pathlib import Path
-from typing import cast
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:  # pragma: no cover - typing helpers only
+    from collections.abc import Sequence
 
 from x_make_common_x.progress_snapshot import load_progress_snapshot
 from x_make_progress_board_x.progress_board_widget import run_progress_board
@@ -33,8 +35,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     )
     args = parser.parse_args(list(argv) if argv is not None else None)
 
-    snapshot_arg = cast("str", args.snapshot)
-    snapshot_path = Path(snapshot_arg).resolve()
+    snapshot_path = Path(args.snapshot).resolve()
     definitions = _current_stage_layout(snapshot_path)
     if not definitions:
         print("No stages reported yet; using default template.")

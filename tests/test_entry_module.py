@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 import threading
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping
 from pathlib import Path
-from typing import cast
+from typing import TYPE_CHECKING, cast
+
+if TYPE_CHECKING:  # pragma: no cover - typing helpers only
+    from collections.abc import Sequence
 
 from x_make_common_x.progress_snapshot import (
     create_progress_snapshot,

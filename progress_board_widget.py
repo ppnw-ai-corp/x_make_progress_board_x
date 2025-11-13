@@ -6,10 +6,13 @@ import json
 import os
 import sys
 import threading
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Protocol, cast
+from typing import TYPE_CHECKING, Protocol, cast
+
+if TYPE_CHECKING:  # pragma: no cover - typing helpers only
+    from collections.abc import Sequence
 
 from x_make_common_x.progress_snapshot import (
     ProgressSnapshot,
