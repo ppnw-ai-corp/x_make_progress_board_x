@@ -5,7 +5,7 @@ from __future__ import annotations
 import argparse
 import threading
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 if TYPE_CHECKING:  # pragma: no cover - typing helpers only
     from collections.abc import Sequence
@@ -34,8 +34,9 @@ def main(argv: Sequence[str] | None = None) -> int:
         "--snapshot", required=True, help="Path to progress snapshot JSON"
     )
     args = parser.parse_args(list(argv) if argv is not None else None)
+    snapshot_arg = cast("str", args.snapshot)
 
-    snapshot_path = Path(args.snapshot).resolve()
+    snapshot_path = Path(snapshot_arg).resolve()
     definitions = _current_stage_layout(snapshot_path)
     if not definitions:
         print("No stages reported yet; using default template.")

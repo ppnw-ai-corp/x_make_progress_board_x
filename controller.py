@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 import threading
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
-from pathlib import Path
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:  # pragma: no cover - typing helpers only
-    from collections.abc import Callable, Sequence
+    from pathlib import Path
 
 from x_make_progress_board_x.progress_board_widget import run_progress_board
 

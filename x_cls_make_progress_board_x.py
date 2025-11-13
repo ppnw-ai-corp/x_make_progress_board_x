@@ -24,8 +24,8 @@ try:  # pragma: no cover - optional runtime dependency
     from x_make_progress_board_x.progress_board_widget import (
         run_progress_board as _run_progress_board,
     )
-except Exception:  # pragma: no cover - resolved dynamically when PySide6 exists
-    DEFAULT_BOARD_RUNNER: BoardRunner | None = None
+except (ModuleNotFoundError, RuntimeError):
+    DEFAULT_BOARD_RUNNER: BoardRunner | None = None  # pragma: no cover
 else:
     DEFAULT_BOARD_RUNNER = _run_progress_board
 
@@ -240,7 +240,10 @@ class XClsMakeProgressBoardX:
     ) -> dict[str, object]:
         runner = self._runner
         if runner is None:
-            message = "Progress board runner unavailable; install PySide6 to launch the board."
+            message = (
+                "Progress board runner unavailable; install PySide6 to launch "
+                "the board."
+            )
             raise RuntimeError(message)
         stage_definitions = self._effective_stage_definitions()
         worker_error: Exception | None = None
@@ -423,15 +426,16 @@ def _run_json_cli(args: Sequence[str]) -> None:
         parser.error("JSON input required. Use --json for stdin or --json-file <path>.")
     payload = _load_json_payload(json_file)
     result = main_json(payload)
-    import sys  # local import to keep module import light when PySide6 is absent
-
     json.dump(result, sys.stdout, indent=2)
     sys.stdout.write("\n")
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    from x_make_progress_board_x.cli import main as cli_main
-
+    cli_module = importlib.import_module("x_make_progress_board_x.cli")
+    cli_main = cast(
+        "Callable[[Sequence[str] | None], int]",
+        cli_module.main,
+    )
     return cli_main(argv)
 
 

@@ -5,14 +5,13 @@ from __future__ import annotations
 import json
 import os
 import sys
-import threading
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Protocol, cast
 
 if TYPE_CHECKING:  # pragma: no cover - typing helpers only
-    from collections.abc import Sequence
+    import threading
 
 from x_make_common_x.progress_snapshot import (
     ProgressSnapshot,
@@ -69,7 +68,7 @@ class ProgressBoardWidget(QtWidgets.QWidget):
         parent: QtWidgets.QWidget | None = None,
     ) -> None:
         super().__init__(parent)
-        self._snapshot_path = Path(snapshot_path)
+        self._snapshot_path = Path(os.fspath(snapshot_path))
         self._worker_done_event = worker_done_event
         self._stage_definitions: list[tuple[str, str]] = []
         for stage_id, title in stage_definitions:
@@ -432,7 +431,7 @@ class ProgressBoardWidget(QtWidgets.QWidget):
                 entries_dir_candidate = entries_dir_raw.strip()
                 if entries_dir_candidate:
                     entries_dir = Path(entries_dir_candidate)
-        entries_payload: object = payload["entries"] if "entries" in payload else None
+        entries_payload: object = payload.get("entries", None)
         entries = self._normalize_repo_entries(entries_payload, entries_dir)
         return _RepoIndexCacheEntry(path=index_path, mtime=mtime, entries=entries)
 

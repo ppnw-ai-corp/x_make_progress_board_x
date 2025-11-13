@@ -1,12 +1,14 @@
+# ruff: noqa: S101
+
 from __future__ import annotations
 
 import json
-import threading
-from pathlib import Path
 from typing import TYPE_CHECKING, cast
 
 if TYPE_CHECKING:  # pragma: no cover - typing helpers only
+    import threading
     from collections.abc import Sequence
+    from pathlib import Path
 
 import pytest
 

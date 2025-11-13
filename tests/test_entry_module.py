@@ -1,11 +1,13 @@
+# ruff: noqa: S101,PT018,PLR2004
+
 from __future__ import annotations
 
-import threading
 from collections.abc import Mapping
 from pathlib import Path
 from typing import TYPE_CHECKING, cast
 
 if TYPE_CHECKING:  # pragma: no cover - typing helpers only
+    import threading
     from collections.abc import Sequence
 
 from x_make_common_x.progress_snapshot import (
