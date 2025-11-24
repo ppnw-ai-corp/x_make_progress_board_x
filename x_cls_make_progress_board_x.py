@@ -7,6 +7,7 @@ import importlib
 import json
 import sys
 import threading
+import time
 from collections.abc import Callable, Iterable, Mapping, Sequence
 from contextlib import suppress
 from pathlib import Path
@@ -247,20 +248,27 @@ class XClsMakeProgressBoardX:
             raise RuntimeError(message)
         stage_definitions = self._effective_stage_definitions()
         worker_error: Exception | None = None
+        runner_done_event = threading.Event()
         worker_done_event = threading.Event()
+        worker_launch_event = threading.Event()
         worker_thread: threading.Thread | None = None
         if worker is None:
+            runner_done_event.set()
             worker_done_event.set()
+            worker_launch_event.set()
         else:
 
             def _worker_wrapper() -> None:
                 nonlocal worker_error
+                worker_launch_event.wait()
+                time.sleep(0.01)
                 try:
                     worker(worker_done_event)
                 except Exception as exc:  # noqa: BLE001 - capture for metadata
                     worker_error = exc
                 finally:
                     worker_done_event.set()
+                    runner_done_event.set()
 
             worker_thread = threading.Thread(
                 target=_worker_wrapper,
@@ -269,10 +277,11 @@ class XClsMakeProgressBoardX:
             )
             worker_thread.start()
         try:
+            worker_launch_event.set()
             runner(
                 snapshot_path=self.snapshot_path,
                 stage_definitions=stage_definitions,
-                worker_done_event=worker_done_event,
+                worker_done_event=runner_done_event,
             )
         finally:
             if worker_thread is not None:
