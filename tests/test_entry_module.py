@@ -14,6 +14,7 @@ from x_make_common_x.progress_snapshot import (
     create_progress_snapshot,
     write_progress_snapshot,
 )
+
 from x_make_progress_board_x.x_cls_make_progress_board_x import (
     StageSummary,
     XClsMakeProgressBoardX,

@@ -11,6 +11,7 @@ if TYPE_CHECKING:  # pragma: no cover - typing helpers only
     from collections.abc import Sequence
 
 from x_make_common_x.progress_snapshot import load_progress_snapshot
+
 from x_make_progress_board_x.progress_board_widget import run_progress_board
 
 
